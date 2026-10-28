@@ -1,0 +1,44 @@
+﻿@page "/patient-memory"
+
+@using HealthcareAssistant.Blazor.Models
+@using HealthcareAssistant.Blazor.Services
+
+@inject PatientMemoryService PatientMemoryService
+
+<h3>Patient Memory Viewer</h3>
+
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>Patient Id</th>
+            <th>Memory</th>
+            <th>Created Date</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in memories)
+        {
+            <tr>
+                <td>@item.PatientId</td>
+                <td>@item.MemoryText</td>
+                <td>@item.CreatedDate</td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+@code {
+
+    private List<PatientMemory> memories = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        memories =
+            await PatientMemoryService.GetMemoriesAsync();
+    }
+}

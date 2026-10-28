@@ -1,0 +1,54 @@
+﻿@page "/medicalrecords"
+
+@using HealthcareAssistant.Blazor.Models
+@using HealthcareAssistant.Blazor.Services
+
+@inject MedicalRecordService MedicalRecordService
+
+<h3>Medical Record</h3>
+
+<label>Patient Id</label>
+<input class="form-control mb-2"
+       placeholder="Enter Patient Id"
+       @bind="record.PatientId" />
+
+<label>Doctor Id</label>
+<input class="form-control mb-2"
+       placeholder="Enter Doctor Id"
+       @bind="record.DoctorId" />
+
+<label>Diagnosis</label>
+<input class="form-control mb-2"
+       placeholder="Enter Diagnosis"
+       @bind="record.Diagnosis" />
+
+<label>Prescription</label>
+<input class="form-control mb-2"
+       placeholder="Enter Prescription"
+       @bind="record.Prescription" />
+
+<label>Notes</label>
+<textarea class="form-control mb-2"
+          placeholder="Enter Notes"
+          @bind="record.Notes">
+</textarea>
+
+<button class="btn btn-success"
+        @onclick="SaveRecord">
+
+    Save Record
+
+</button>
+
+@code {
+
+    private MedicalRecord record = new();
+
+    private async Task SaveRecord()
+    {
+        await MedicalRecordService
+            .CreateRecord(record);
+
+        record = new MedicalRecord();
+    }
+}

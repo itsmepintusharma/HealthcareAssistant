@@ -1,0 +1,13 @@
+﻿Diabetes
+
+Treatment:
+
+1. Metformin
+
+2. Insulin Therapy
+
+3. Exercise
+
+4. Healthy diet
+
+5. Blood sugar monitoring

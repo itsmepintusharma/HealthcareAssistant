@@ -1,0 +1,61 @@
+﻿@page "/evaluations"
+
+@using HealthcareAssistant.Blazor.Models
+@using HealthcareAssistant.Blazor.Services
+
+@inject MonitoringService MonitoringService
+
+<h3>AI Evaluation Logs</h3>
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+
+            <th>Query</th>
+
+            <th>Response</th>
+
+            <th>Relevance</th>
+
+            <th>Accuracy</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in logs)
+        {
+            <tr>
+
+                <td>@item.Query</td>
+
+                <td>@item.Response</td>
+
+                <td>@item.RelevanceScore</td>
+
+                <td>@item.AccuracyScore</td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+@code
+{
+    private List<EvaluationLog>
+        logs = new();
+
+    protected override async Task
+        OnInitializedAsync()
+    {
+        logs =
+            await MonitoringService
+                .GetEvaluationLogsAsync();
+    }
+}

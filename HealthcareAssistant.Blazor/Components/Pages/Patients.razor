@@ -1,0 +1,111 @@
+﻿@page "/patients"
+
+@using HealthcareAssistant.Blazor.Models
+@using HealthcareAssistant.Blazor.Services
+
+@inject PatientService PatientService
+
+<h3>Patients</h3>
+
+<hr />
+
+<h4>Add Patient</h4>
+
+<div class="row">
+
+    <div class="col-md-4">
+
+        <input class="form-control mb-2"
+               placeholder="First Name"
+               @bind="newPatient.FirstName" />
+
+        <input class="form-control mb-2"
+               placeholder="Last Name"
+               @bind="newPatient.LastName" />
+
+        <input class="form-control mb-2"
+               placeholder="Email"
+               @bind="newPatient.Email" />
+
+        <input class="form-control mb-2"
+               placeholder="Phone"
+               @bind="newPatient.PhoneNumber" />
+
+        <button class="btn btn-primary"
+                @onclick="SavePatient">
+
+            Save Patient
+
+        </button>
+
+    </div>
+
+</div>
+
+<hr />
+
+<h4>Patient List</h4>
+
+<table class="table">
+
+    <thead>
+
+        <tr>
+
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var patient in patients)
+        {
+            <tr>
+
+                <td>@patient.Id</td>
+                <td>@patient.FirstName</td>
+                <td>@patient.LastName</td>
+                <td>@patient.Email</td>
+                <td>@patient.PhoneNumber</td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+@code {
+
+    private List<Patient> patients = new();
+
+    private Patient newPatient = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPatients();
+    }
+
+    private async Task LoadPatients()
+    {
+        patients =
+            await PatientService.GetPatients();
+    }
+
+    private async Task SavePatient()
+    {
+        await PatientService.CreatePatient(newPatient);
+
+        patients = await PatientService.GetPatients();
+
+        newPatient = new Patient();
+
+        StateHasChanged();
+    }
+}

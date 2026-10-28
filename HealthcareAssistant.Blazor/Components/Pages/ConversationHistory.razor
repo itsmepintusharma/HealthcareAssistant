@@ -1,0 +1,61 @@
+﻿@page "/history"
+
+@using HealthcareAssistant.Blazor.Models
+@using HealthcareAssistant.Blazor.Services
+
+@inject MemoryService MemoryService
+
+<h3>Conversation History</h3>
+
+@if (history.Count == 0)
+{
+    <p>No conversations available.</p>
+}
+else
+{
+    @foreach (var item in history)
+    {
+        <div class="card mb-3">
+
+            <div class="card-header">
+
+                <b>User Query</b>
+
+            </div>
+
+            <div class="card-body">
+
+                @item.UserMessage
+
+            </div>
+
+            <div class="card-header">
+
+                <b>AI Response</b>
+
+            </div>
+
+            <div class="card-body">
+
+                <div style="white-space: pre-wrap;">
+                    @item.AgentResponse
+                </div>
+
+            </div>
+
+        </div>
+    }
+}
+
+@code {
+
+    private List<ConversationMemory>
+        history = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        history =
+            await MemoryService
+                .GetMemoriesAsync();
+    }
+}

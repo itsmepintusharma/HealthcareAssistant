@@ -1,0 +1,61 @@
+﻿@page "/agent-logs"
+
+@using HealthcareAssistant.Blazor.Models
+@using HealthcareAssistant.Blazor.Services
+
+@inject MonitoringService MonitoringService
+
+<h3>Agent Execution Logs</h3>
+
+<table class="table table-striped">
+
+    <thead>
+
+        <tr>
+
+            <th>Agent</th>
+
+            <th>Task</th>
+
+            <th>Success</th>
+
+            <th>Result</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in logs)
+        {
+            <tr>
+
+                <td>@item.AgentName</td>
+
+                <td>@item.TaskName</td>
+
+                <td>@item.Success</td>
+
+                <td>@item.Result</td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+@code
+{
+    private List<AgentExecutionLog>
+        logs = new();
+
+    protected override async Task
+        OnInitializedAsync()
+    {
+        logs =
+            await MonitoringService
+                .GetAgentLogsAsync();
+    }
+}

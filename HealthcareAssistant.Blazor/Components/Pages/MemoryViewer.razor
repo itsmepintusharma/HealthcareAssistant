@@ -1,0 +1,63 @@
+﻿@page "/memory"
+
+@using HealthcareAssistant.Blazor.Models
+@using HealthcareAssistant.Blazor.Services
+
+@inject MemoryService MemoryService
+
+<h3>Memory Viewer</h3>
+
+@if (memories.Count == 0)
+{
+    <p>No memory exists.</p>
+}
+else
+{
+    <table class="table table-striped">
+
+        <thead>
+
+            <tr>
+
+                <th>Id</th>
+
+                <th>User Message</th>
+
+                <th>AI Response</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in memories)
+            {
+                <tr>
+
+                    <td>@item.Id</td>
+
+                    <td>@item.UserMessage</td>
+
+                    <td>@item.AgentResponse</td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+}
+
+@code {
+
+    private List<ConversationMemory>
+        memories = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        memories =
+            await MemoryService
+                .GetMemoriesAsync();
+    }
+}

@@ -1,0 +1,66 @@
+﻿@page "/monitoring"
+
+<h3>AI Monitoring Dashboard</h3>
+
+<div class="row">
+
+    <div class="col-md-3">
+
+        <div class="card p-3 bg-primary text-white">
+
+            <h5>Patients</h5>
+
+            <h2>@patients</h2>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card p-3 bg-success text-white">
+
+            <h5>Doctors</h5>
+
+            <h2>@doctors</h2>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card p-3 bg-warning text-dark">
+
+            <h5>Appointments</h5>
+
+            <h2>@appointments</h2>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card p-3 bg-info text-white">
+
+            <h5>AI Conversations</h5>
+
+            <h2>@conversations</h2>
+
+        </div>
+
+    </div>
+
+</div>
+
+@code
+{
+    private int patients = 1;
+
+    private int doctors = 1;
+
+    private int appointments = 1;
+
+    private int conversations = 1;
+}

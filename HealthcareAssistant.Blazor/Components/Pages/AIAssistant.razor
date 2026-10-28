@@ -1,0 +1,51 @@
+﻿@page "/ai"
+
+@using HealthcareAssistant.Blazor.Services
+
+@inject AIService AIService
+
+<h3>Healthcare AI Assistant</h3>
+
+<div class="mb-3">
+
+    <InputTextArea class="form-control"
+                   rows="5"
+                   @bind-Value="userPrompt" />
+
+</div>
+
+<button class="btn btn-primary"
+        @onclick="SendPrompt">
+    Ask AI
+</button>
+
+<hr />
+
+<h4>AI Response</h4>
+
+<textarea class="form-control"
+          rows="15"
+          readonly>@response</textarea>
+
+@code
+{
+    private string userPrompt = "";
+
+    private string response = "";
+
+    private async Task SendPrompt()
+    {
+        try
+        {
+            response = "Thinking...";
+
+            response =
+                await AIService.ChatAsync(
+                    userPrompt);
+        }
+        catch (Exception ex)
+        {
+            response = ex.ToString();
+        }
+    }
+}

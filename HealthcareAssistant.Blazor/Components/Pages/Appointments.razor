@@ -1,0 +1,90 @@
+﻿@page "/appointments"
+
+@using HealthcareAssistant.Blazor.Models
+@using HealthcareAssistant.Blazor.Services
+
+@inject AppointmentService AppointmentService
+
+<h3>Book Appointment</h3>
+
+<label>Patient Id</label>
+<input class="form-control mb-2"
+       placeholder="Enter Patient Id"
+       @bind="appointment.PatientId" />
+
+<label>Doctor Id</label>
+<input class="form-control mb-2"
+       placeholder="Enter Doctor Id"
+       @bind="appointment.DoctorId" />
+
+<label>Reason for Appointment</label>
+<input class="form-control mb-2"
+       placeholder="Enter Reason"
+       @bind="appointment.Reason" />
+
+<button class="btn btn-primary"
+        @onclick="SaveAppointment">
+
+    Book
+
+</button>
+
+<hr />
+
+<table class="table">
+
+    <thead>
+
+        <tr>
+            <th>Id</th>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Status</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in appointments)
+        {
+            <tr>
+
+                <td>@item.Id</td>
+                <td>@item.PatientId</td>
+                <td>@item.DoctorId</td>
+                <td>@item.Status</td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+@code {
+
+    private Appointment appointment = new();
+
+    private List<Appointment> appointments = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        appointments =
+            await AppointmentService.GetAppointments();
+    }
+
+    private async Task SaveAppointment()
+    {
+        appointment.AppointmentDate =
+            DateTime.Now.AddDays(1);
+
+        await AppointmentService
+            .CreateAppointment(appointment);
+
+        appointment = new();
+
+        appointments =
+            await AppointmentService.GetAppointments();
+    }
+}

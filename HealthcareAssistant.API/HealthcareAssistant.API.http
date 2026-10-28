@@ -1,0 +1,6 @@
+@HealthcareAssistant.API_HostAddress = http://localhost:5145
+
+GET {{HealthcareAssistant.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

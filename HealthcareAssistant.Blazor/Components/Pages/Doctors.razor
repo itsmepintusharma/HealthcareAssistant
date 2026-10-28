@@ -1,0 +1,85 @@
+﻿@page "/doctors"
+
+@using HealthcareAssistant.Blazor.Models
+@using HealthcareAssistant.Blazor.Services
+
+@inject DoctorService DoctorService
+
+<h3>Doctors</h3>
+
+<div class="row">
+
+    <div class="col-md-4">
+
+        <input class="form-control mb-2"
+               placeholder="Doctor Name"
+               @bind="doctor.DoctorName" />
+
+        <input class="form-control mb-2"
+               placeholder="Specialization"
+               @bind="doctor.Specialization" />
+
+        <input class="form-control mb-2"
+               placeholder="Email"
+               @bind="doctor.Email" />
+
+        <button class="btn btn-success"
+                @onclick="SaveDoctor">
+
+            Save Doctor
+
+        </button>
+
+    </div>
+
+</div>
+
+<hr />
+
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Specialization</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in doctors)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.DoctorName</td>
+                <td>@item.Specialization</td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+@code {
+
+    private Doctor doctor = new();
+
+    private List<Doctor> doctors = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        doctors = await DoctorService.GetDoctors();
+    }
+
+    private async Task SaveDoctor()
+    {
+        await DoctorService.CreateDoctor(doctor);
+
+        doctor = new();
+
+        doctors = await DoctorService.GetDoctors();
+
+        StateHasChanged();
+    }
+}
