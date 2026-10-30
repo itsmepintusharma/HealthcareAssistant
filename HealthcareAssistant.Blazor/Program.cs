@@ -22,6 +22,7 @@ builder.Services.AddScoped<AIService>();
 builder.Services.AddScoped<MemoryService>();
 builder.Services.AddScoped<PatientMemoryService>();
 builder.Services.AddScoped<MonitoringService>();
+builder.Services.AddScoped<DashboardService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

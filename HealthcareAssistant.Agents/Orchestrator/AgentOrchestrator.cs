@@ -19,6 +19,9 @@ public class AgentOrchestrator
     private readonly SearchAgent.SearchAgent _searchAgent;
 
     private readonly SummaryAgent.SummaryAgent _summaryAgent;
+    private readonly DoctorAgent.DoctorAgent _doctorAgent;
+
+    private readonly PatientAgent.PatientAgent _patientAgent;
 
     private readonly IMemoryService _memoryService;
     private readonly IMonitoringService _monitoring;
@@ -32,7 +35,9 @@ public class AgentOrchestrator
         SummaryAgent.SummaryAgent summaryAgent,
         IMemoryService memoryService,
         IMonitoringService monitoring,
-        EvaluationService evaluationService)
+        EvaluationService evaluationService,
+        DoctorAgent.DoctorAgent doctorAgent,
+        PatientAgent.PatientAgent patientAgent)
     {
         _planner = planner;
         _appointmentAgent = appointmentAgent;
@@ -42,6 +47,8 @@ public class AgentOrchestrator
         _memoryService = memoryService;
         _monitoring = monitoring;
         _evaluationService = evaluationService;
+        _doctorAgent = doctorAgent;
+        _patientAgent = patientAgent;
     }
 
     public async Task<string> ExecuteAsync(
@@ -71,8 +78,7 @@ public class AgentOrchestrator
             {
                 case "BOOK_APPOINTMENT":
 
-                    var appointmentResult =
-                        await _appointmentAgent.ExecuteAsync();
+                    var appointmentResult = await _appointmentAgent.ExecuteAsync(prompt);
 
                     await _monitoring.LogAgentAsync(
                         "AppointmentAgent",
@@ -110,6 +116,23 @@ public class AgentOrchestrator
                     results.Add(searchResult);
 
                     break;
+
+                case "GET_DOCTOR":
+
+                    results.Add(
+                        await _doctorAgent.ExecuteAsync(
+                            prompt));
+
+                    break;
+
+                case "GET_PATIENT":
+
+                    results.Add(
+                        await _patientAgent.ExecuteAsync(
+                            prompt));
+
+                    break;
+
             }
         }
 

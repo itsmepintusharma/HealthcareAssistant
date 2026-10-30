@@ -34,6 +34,8 @@ public class AIPlanner : IAIPlanner
         GET_HISTORY
         BOOK_APPOINTMENT
         SEARCH_DISEASE
+        GET_DOCTOR
+        GET_PATIENT
         GENERATE_SUMMARY
 
         Rules:

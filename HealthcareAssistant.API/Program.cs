@@ -1,9 +1,12 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using HealthcareAssistant.Agents.AppointmentAgent;
+using HealthcareAssistant.Agents.DoctorAgent;
 using HealthcareAssistant.Agents.MedicalRecordAgent;
 using HealthcareAssistant.Agents.Memory;
 using HealthcareAssistant.Agents.Monitoring;
 using HealthcareAssistant.Agents.Orchestrator;
+using HealthcareAssistant.Agents.PatientAgent;
 using HealthcareAssistant.Agents.PlannerAgent;
 using HealthcareAssistant.Agents.SearchAgent;
 using HealthcareAssistant.Agents.SummaryAgent;
@@ -19,7 +22,12 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Controllers
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler =
+            ReferenceHandler.IgnoreCycles;
+    });
 
 // Database
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -38,9 +46,12 @@ builder.Services.AddScoped<IRagService, RagService>();
 builder.Services.AddScoped<IAIPlanner, AIPlanner>();
 builder.Services.AddScoped<IMonitoringService,MonitoringService>();
 builder.Services.AddScoped<EvaluationService>();
+builder.Services.AddScoped<
+    DoctorAgent>();
 builder.Services.Configure<OpenAISettings>(
     builder.Configuration.GetSection("OpenAI"));
-
+builder.Services.AddScoped<
+    PatientAgent>();
 
 builder.Services.AddScoped<AgentOrchestrator>();
 

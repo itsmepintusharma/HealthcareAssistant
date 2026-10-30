@@ -1,5 +1,10 @@
 ﻿@page "/"
 
+@using HealthcareAssistant.Blazor.Models
+@using HealthcareAssistant.Blazor.Services
+
+@inject DashboardService DashboardService
+
 <h3>Healthcare Dashboard</h3>
 
 <hr />
@@ -12,7 +17,7 @@
 
             <h5>Patients</h5>
 
-            <h2>0</h2>
+            <h2>@stats.Patients</h2>
 
         </div>
 
@@ -24,7 +29,7 @@
 
             <h5>Doctors</h5>
 
-            <h2>0</h2>
+            <h2>@stats.Doctors</h2>
 
         </div>
 
@@ -36,10 +41,33 @@
 
             <h5>Appointments</h5>
 
-            <h2>0</h2>
+            <h2>@stats.Appointments</h2>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card p-3">
+
+            <h5>conversations</h5>
+
+            <h2>@stats.Conversations</h2>
 
         </div>
 
     </div>
 
 </div>
+@code
+{
+    private DashboardStats stats = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        stats =
+            await DashboardService
+                .GetStatsAsync();
+    }
+}
